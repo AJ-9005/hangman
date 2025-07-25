@@ -3,6 +3,7 @@ from tkinter import *
 from tkinter import messagebox
 
 root = Tk()
+root.title("Hangman")
 root.geometry("720x540")
 root.resizable(False, False)
 root.configure(background="black")
@@ -40,14 +41,15 @@ start.grid(row=1, column=2, columnspan=3)
 def updater(lis):
     for i in range(5):
         l1 = Label(f, text=lis[i], background="black", foreground="white", font="TimesNewRoman 18")
-        l1.grid(row=1, column=i+1, sticky='nsew') 
+        l1.grid(row=1, column=i+1, sticky='nsew')
+        l1.update() 
 
 def submitted(key, word, lis):
     str1 = key.get()
     checker(str1[0], word, lis)
-    updater(lis)
+    updater(hidlis)
     global count
-    res = fullword(lis)
+    res = fullword(hidlis)
     if res == word:
         response = messagebox.askretrycancel("You won!", f"It took you {count} tries!")
         if response:
@@ -98,12 +100,14 @@ def lifeloss():
     return
 
 submit = Button(root, text="Enter", height=1, width=3)
-
+hidlis =[]
 def startgame(e):
-    global lives, count
+    global lives, count, hidlis
     lives = 6
     count = 0
     start.destroy()
+    hidlis=["_", "_", "_", "_", "_"]
+    updater(hidlis)
     fh=open("words.txt","r")
     words=list(map(str.strip, fh.readlines()))
     fh.close()
@@ -112,15 +116,13 @@ def startgame(e):
         if len(word) == 5:
             break
 
-    hidlis=["_", "_", "_", "_", "_"]
-
     l1.pack(side=LEFT, padx=10)
     E.pack(side=LEFT, padx=10)
     submit.pack(side=LEFT, padx=10)
     submit.bind('<Button-1>', lambda e: submitted(key, word, hidlis))
     
-    updater(hidlis)
-    
+    print(word)
+
 f.pack(fill="both", expand=True)
 start.bind('<Button-1>', startgame)
 
