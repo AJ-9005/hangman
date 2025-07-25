@@ -119,9 +119,8 @@ def startgame(e):
     submit.pack(side=LEFT, padx=10)
     submit.bind('<Button-1>', lambda e: submitted(key, word, hidlis))
     
-
     updater(hidlis)
-    print(word)
+    
 f.pack(fill="both", expand=True)
 start.bind('<Button-1>', startgame)
 
